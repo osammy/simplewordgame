@@ -200,11 +200,9 @@ houses = [
 
 
     /* Reset Game */
-    function resetGame(d) {
+    function resetGame() {
         showScore = document.getElementById('score');
         showScore.innerText = "Score";
-        alert(d)
-
         clearAllFields();
         initState();
         document.getElementsByClassName('one')[0].parentElement.firstChild.focus();
