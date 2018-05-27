@@ -141,6 +141,10 @@ function init() {
             case "four":
                 document.getElementsByClassName("five")[0].parentElement.firstChild.focus();
                 break;
+            case "five":
+                document.getElementsByClassName("one")[0].parentElement.firstChild.focus();
+                break;
+
 
         }
 
@@ -195,7 +199,7 @@ function init() {
     /*focuse code*/
     var blurred, focused, wordEntered = ""; var keepAccount = [], globalKeeper = [];
     var score = 0, highScore = 0;
-    
+
 
 
     /* Reset Game */
@@ -209,101 +213,102 @@ function init() {
     startGame();
 
     /*End Reset Game */
-function startGame() {
+    function startGame() {
         var test = document.getElementsByClassName('letter');
         for (var i = 0; i < test.length; i++) {
 
-        test[i].addEventListener('click', function (e) {
+            test[i].addEventListener('click', function (e) {
 
-            blurred.value = e.target.innerText;
-            wordEntered = wordEntered + e.target.innerText;
-            next = blurred;
+                blurred.value = e.target.innerText;
+                wordEntered = wordEntered + e.target.innerText;
+                next = blurred;
 
-            if (next.tagName.toLowerCase() == 'input') {
-                keepAccount.push(next);
-                globalKeeper.push(next);
-            }
-
-            if (next.nextElementSibling == null) {
-
-                full = checkIfFilled(next);
-                if (!full) return;
-                var answer = document.getElementById('answer');
-                
-                wordList = checkWord(wordEntered, dictionary);
-                if (wordList.length == dictionary.length) {
-
-                    next.parentElement.classList.add('animated', 'wobble');
-                    answer.innerText = "Wrong!";
-                    answer.classList.add('wrong');
-
-                    next.parentElement.firstChild.focus();
-
-
-                    //setTimeout(function () {
-                    answer.classList.add('animated', 'fadeOut');
-                    //}, 100);
-                    console.log(next)
-                    callSetTimeout(next)
-                    clearField();
-
-
+                if (next.tagName.toLowerCase() == 'input') {
+                    keepAccount.push(next);
+                    globalKeeper.push(next);
                 }
-                else {
-                    dictionary = wordList;
-                    wordsCompleted++;
-                    placeCursorInNextField(next)
-                    answer.innerText = "Correct!";
-                    answer.classList.add('right');
-                    score += 5;
-                    highScore += 5;
-                    showScore = document.getElementById('score');
-                    showScore.innerText = "Score: " + score;
+
+                if (next.nextElementSibling == null) {
+
+                    full = checkIfFilled(next);
+                    if (!full) return;
+                    var answer = document.getElementById('answer');
+
+                    wordList = checkWord(wordEntered, dictionary);
+                    if (wordList.length == dictionary.length) {
+
+                        next.parentElement.classList.add('animated', 'wobble');
+                        answer.innerText = "Wrong!";
+                        answer.classList.add('wrong');
+
+                        next.parentElement.firstChild.focus();
 
 
-                    for (var k = 0; k < keepAccount.length; k++) {
-                        keepAccount[k].style.background = "#4caf50";
-                        // keepAccount[k].classList.add('good');
-                        keepAccount[k].disabled = true;
+                        //setTimeout(function () {
+                        answer.classList.add('animated', 'fadeOut');
+                        //}, 100);
+                        console.log(next)
+                        callSetTimeout(next)
+                        clearField();
+
+
+                    }
+                    else {
+                        dictionary = wordList;
+                        wordsCompleted++;
+                        placeCursorInNextField(next)
+                        answer.innerText = "Correct!";
+                        answer.classList.add('right');
+                        score += 5;
+                        highScore += 5;
+                        showScore = document.getElementById('score');
+                        showScore.innerText = "Score: " + score;
+
+
+                        for (var k = 0; k < keepAccount.length; k++) {
+                            keepAccount[k].style.background = "#4caf50";
+                            // keepAccount[k].classList.add('good');
+                            keepAccount[k].disabled = true;
+                        }
+
+                        answer.classList.add('animated', 'fadeOut');
+
+                        setTimeout(function () {
+                            answer.classList.remove('animated', 'fadeOut', 'right');
+                            answer.innerText = "";
+                        }, 1000)
+
+                    }
+                    wordEntered = "";
+                    keepAccount = [];
+                    if (wordsCompleted == maxWordsPerStage) {
+                        nextStage = incrementStage();
+
+                        moveToNextStage(nextStage);
+                        placeCursorInNextField(next)
+                        // document.getElementsByClassName("one")[0].parentElement.firstChild.focus();
+                        return;
                     }
 
-                    answer.classList.add('animated', 'fadeOut');
-
-                    setTimeout(function () {
-                        answer.classList.remove('animated', 'fadeOut', 'right');
-                        answer.innerText = "";
-                    }, 1000)
-
                 }
-                wordEntered = "";
-                keepAccount = [];
-                if (wordsCompleted == maxWordsPerStage) {
-                    nextStage = incrementStage();
+                //this piece of code does the moving of cursor after a field is entered.
+                while (next = next.nextElementSibling) {
+                    if (next == null) {
+                        break;
+                    }
+                    if (next.tagName.toLowerCase() === "input") {
 
-                    moveToNextStage(nextStage);
-                    document.getElementsByClassName("one")[0].parentElement.firstChild.focus();
-                    return;
+                        next.focus();
+                        break;
+                    }
                 }
 
-            }
-            //this piece of code does the moving of cursor
-            while (next = next.nextElementSibling) {
-                if (next == null) {
-                    break;
-                }
-                if (next.tagName.toLowerCase() === "input") {
+            })
 
-                    next.focus();
-                    break;
-                }
-            }
-
-        })
-
+        }
     }
-}
 
-//the below code gives an eventListener for all inputs and gives us the input htat ha been blurred
+    //the below code gives an eventListener for all inputs and gives us the input htat ha been blurred
     var els = document.querySelectorAll('input');
     Array.prototype.forEach.call(els, function (el) {
         el.addEventListener('blur', function () {
