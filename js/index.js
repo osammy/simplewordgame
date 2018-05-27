@@ -4,27 +4,25 @@ window.onload = init;
 
 function init() {
 
-    // var dictionary = [
-    //     "lusts", "luter", 'trues', "rusts", "sluse",
-    //     "suers", "rests", "sluts", "slues", "lures",
-    //     "sures", "truss", "trues", "tress", "users",
-    //     "rusts", "tules", "rules", "slurs", "ruses",
-    //     "lutes", "set", "rule", "lut", "luts"
-    // ];
+    var result,houses,relief,bitter,wordKey,tiles,bgColor,stage,maxWordsPerStage,wordsPerStage;
+    var currentDictionary,wordsCompleted,blurred,focused,wordEntered,keepAccount;
+    var globalKeeper,score,highScore;
+initState();
+    
 
-    var result = [
+    function initState() {
+result = [
         "lusts", "luter", 'trues', "rusts", "sluse",
         "suers", "rests", "sluts", "slues", "lures",
         "sures", "truss", "trues", "tress", "users",
         "rusts", "tules", "rules", "slurs", "ruses",
         "lutes", "set", "rule", "lut", "luts"
     ];
-
-    var houses = [
+houses = [
         "hose", "shoe", "shoes", "sou", "she", "house"
     ]
 
-    var relief = [
+    relief = [
         "feel", "lie", "file", "ref", "reef", "free", "flee",
         "flier", "relie"
     ]
@@ -33,22 +31,25 @@ function init() {
     // var tiles = [
     //     "result","change","houses","savers","insect","spaces","relief","belief"
     // ]
-    var bitter = [
+    bitter = [
         "bit", "bite", "rite", "rib", "rit", "tier", "bet"
     ]
 
-    var wordKey = ["result", "houses", "relief", "bitter"];
+    wordKey = ["result", "houses", "relief", "bitter"];
 
-    var tiles = {
+    tiles = {
         "result": result,
         "houses": houses,
         "relief": relief,
         "bitter": bitter
     }
-    var bgColor = ["", "", ""]
+    bgColor = ["", "", ""]
 
-    var stage = 1; var maxWordsPerStage = 5; var wordsPerStage = 0; var currentDictionary = "";
-    var wordsCompleted = 0;
+    stage = 1; maxWordsPerStage = 5;wordsPerStage = 0; currentDictionary = "";
+    wordsCompleted = 0;
+  wordEntered = ""; keepAccount = [], globalKeeper = [];
+    score = 0, highScore = 0;
+    }
 
     function determineStage() {
         return stage;
@@ -153,7 +154,6 @@ function init() {
 
     function clearField() {
         for (var k = 0; k < keepAccount.length; k++) {
-
             keepAccount[k].value = "";
         }
     }
@@ -167,7 +167,7 @@ function init() {
         return currentDictionary;
     }
 
-    function checkWord(dWord, dictionary) {
+    function modifyDictionary(dWord, dictionary) {
 
         return dictionary.filter(function (value) {
             return dWord !== value.toUpperCase();
@@ -175,8 +175,6 @@ function init() {
     }
 
     function checkIfFilled(inputTag) {
-
-
         count = inputTag.parentElement.childElementCount;
 
         for (var i = 0; i < count; i++) {
@@ -197,18 +195,66 @@ function init() {
     /* end defination*/
 
     /*focuse code*/
-    var blurred, focused, wordEntered = ""; var keepAccount = [], globalKeeper = [];
-    var score = 0, highScore = 0;
+
 
 
 
     /* Reset Game */
-    function resetGame() {
+    function resetGame(d) {
         showScore = document.getElementById('score');
         showScore.innerText = "Score";
+        alert(d)
 
         clearAllFields();
-        init();
+        initState();
+        document.getElementsByClassName('one')[0].parentElement.firstChild.focus();
+
+    }
+    function modifyScore() {
+        score += 5;
+        highScore += 5;
+        showScore = document.getElementById('score');
+        showScore.innerText = "Score: " + score;
+    }
+    function reactToUsersAnswer(correct) {
+
+        if (correct) {
+            dictionary = wordList;
+            wordsCompleted++;
+            placeCursorInNextField(next)
+            answer.innerText = "Correct!";
+            answer.classList.add('right');
+            answer.classList.add('animated', 'fadeOut');
+            setTimeout(function () {
+                answer.classList.remove('animated', 'fadeOut', 'right');
+                answer.innerText = "";
+            }, 1000);
+            modifyScore();
+            //change the color of the input items to green, to indicate a correct field
+            for (var k = 0; k < keepAccount.length; k++) {
+                keepAccount[k].style.background = "#4caf50";
+                // keepAccount[k].classList.add('good');
+                keepAccount[k].disabled = true;
+            }
+ }
+        else {
+            next.parentElement.classList.add('animated', 'wobble');
+            answer.innerText = "Wrong!";
+            answer.classList.add('wrong');
+            next.parentElement.firstChild.focus();
+            answer.classList.add('animated', 'fadeOut');
+            callSetTimeout(next)
+            clearField();
+        }
+    }
+
+    function checkWord() {
+        if (wordList.length == dictionary.length) {
+            return false
+        }
+        else {
+            return true;
+        }
     }
     startGame();
 
@@ -234,62 +280,19 @@ function init() {
                     if (!full) return;
                     var answer = document.getElementById('answer');
 
-                    wordList = checkWord(wordEntered, dictionary);
-                    if (wordList.length == dictionary.length) {
+                    wordList = modifyDictionary(wordEntered, dictionary);
+                    isCorrect = checkWord();
+                    reactToUsersAnswer(isCorrect);
 
-                        next.parentElement.classList.add('animated', 'wobble');
-                        answer.innerText = "Wrong!";
-                        answer.classList.add('wrong');
-
-                        next.parentElement.firstChild.focus();
-
-
-                        //setTimeout(function () {
-                        answer.classList.add('animated', 'fadeOut');
-                        //}, 100);
-                        console.log(next)
-                        callSetTimeout(next)
-                        clearField();
-
-
-                    }
-                    else {
-                        dictionary = wordList;
-                        wordsCompleted++;
-                        placeCursorInNextField(next)
-                        answer.innerText = "Correct!";
-                        answer.classList.add('right');
-                        score += 5;
-                        highScore += 5;
-                        showScore = document.getElementById('score');
-                        showScore.innerText = "Score: " + score;
-
-
-                        for (var k = 0; k < keepAccount.length; k++) {
-                            keepAccount[k].style.background = "#4caf50";
-                            // keepAccount[k].classList.add('good');
-                            keepAccount[k].disabled = true;
-                        }
-
-                        answer.classList.add('animated', 'fadeOut');
-
-                        setTimeout(function () {
-                            answer.classList.remove('animated', 'fadeOut', 'right');
-                            answer.innerText = "";
-                        }, 1000)
-
-                    }
                     wordEntered = "";
                     keepAccount = [];
                     if (wordsCompleted == maxWordsPerStage) {
                         nextStage = incrementStage();
-
                         moveToNextStage(nextStage);
                         placeCursorInNextField(next)
                         // document.getElementsByClassName("one")[0].parentElement.firstChild.focus();
                         return;
                     }
-
                 }
                 //this piece of code does the moving of cursor after a field is entered.
                 while (next = next.nextElementSibling) {

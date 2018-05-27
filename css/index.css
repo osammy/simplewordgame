@@ -1,3 +1,7 @@
+*{
+    box-sizing: border-box;
+}
+
 #main {
     width:70%;
     height: 600px;
@@ -5,10 +9,16 @@
     border: 1px solid black;
     /*background: red;*/
     position:relative;
-    background: black;
+      background-image:
+    linear-gradient(
+      brown, #f06d06
+    );
+    font-family: 'Ubuntu', sans-serif;
+    /*background: url('../img/wallpaper.png')*/
     /*display: inline;*/
     /*3cb5e8,333,295396*/
 }
+
 
 #top-left {
     position:absolute;
@@ -21,7 +31,7 @@
 #inner-top-left {
    
     justify-content: space-around;
-    border:1px solid red;    
+    /*border:1px solid white;    */
     width:90%;
     margin:10px;
     height:90%;
@@ -52,18 +62,16 @@
 .row span input {
     
     text-align: center;
-    color:black;
     flex-direction: row;
     flex-grow: 1;
     width:20px;
     border:none;
     height:20px;
-    /*border-radius: 10px;*/
-    border-bottom: 2px solid #999;
+
     padding-right:20px;
-    background: grey;
+    /*background: grey;*/
     margin: 5px;
-    color:white;
+    /*color:white;*/
     font-size: 1.2em;
     font-weight: bold;
     text-transform: uppercase;
@@ -90,7 +98,7 @@
     position: absolute;
     height: 90%;
     margin:3%;
-    border: 1px solid blue;
+    border: 1px solid white;
     border-top-right-radius: 5px;
       border-top-left-radius: 5px;
       border-bottom-right-radius: 5px;
@@ -116,7 +124,6 @@
     align-content: center;    position:absolute;
     height: auto;
     margin:1%;
-    border: 1px solid blue;
     border-top-right-radius: 5px;
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -130,6 +137,11 @@
     height: 50px;
     text-align: center;
     color:white;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    box-shadow: 1px 1px 1px 1px black;
 }
 
 .wrong {
@@ -173,7 +185,6 @@
 }
 
 #top-right-content {
-    border: 1px solid blue;
     position: absolute;
     width:90%;
     text-align: center;
