@@ -9,13 +9,14 @@
     border: 1px solid black;
     /*background: red;*/
     position:relative;
-      background-image:
+    color:white;
+      /*background-image:
     linear-gradient(
       brown, #f06d06
-    );
+    );*/
     font-family: 'Ubuntu', sans-serif;
-    /*background: url('../img/wallpaper.png')*/
-    /*display: inline;*/
+    background: url('../img/wood11.jpg') ;
+    /*background-size: cover*/
     /*3cb5e8,333,295396*/
 }
 
@@ -60,7 +61,7 @@
     margin:5px;
 }
 .row span input {
-    
+    background: transparent;
     text-align: center;
     flex-direction: row;
     flex-grow: 1;
@@ -69,10 +70,11 @@
     height:30px;
     height: 35px;
     padding-right:20px;
+    color:white;
     /*background: grey;*/
     margin: 5px;
     /*color:white;*/
-    font-size: 1.2em;
+    font-size: 2em;
     font-weight: bold;
     text-transform: uppercase;
          /*border-bottom-right-radius: 5px;
@@ -153,6 +155,7 @@
 .right {
     color:white;
     background: #4caf50;
+    opacity:0.9;
 }
 
 #answer {
