@@ -4,75 +4,198 @@ window.onload = init;
 
 function init() {
 
-    var dictionary = [
+    // var dictionary = [
+    //     "lusts", "luter", 'trues', "rusts", "sluse",
+    //     "suers", "rests", "sluts", "slues", "lures",
+    //     "sures", "truss", "trues", "tress", "users",
+    //     "rusts", "tules", "rules", "slurs", "ruses",
+    //     "lutes", "set", "rule", "lut", "luts"
+    // ];
+
+    var result = [
         "lusts", "luter", 'trues', "rusts", "sluse",
         "suers", "rests", "sluts", "slues", "lures",
         "sures", "truss", "trues", "tress", "users",
         "rusts", "tules", "rules", "slurs", "ruses",
-        "lutes","set","rule","lut","luts"
+        "lutes", "set", "rule", "lut", "luts"
     ];
 
+    var houses = [
+        "hose", "shoe", "shoes", "sou", "she", "house"
+    ]
 
-    var check = document.getElementById('check');
+    var relief = [
+        "feel", "lie", "file", "ref", "reef", "free", "flee",
+        "flier", "relie"
+    ]
 
 
+    // var tiles = [
+    //     "result","change","houses","savers","insect","spaces","relief","belief"
+    // ]
+    var bitter = [
+        "bit", "bite", "rite", "rib", "rit", "tier", "bet"
+    ]
 
-    var container = document.getElementById('inner-top-left')
-    console.log(container);
-    container.onkeyup = function (e) {
-        // alert('er')
-        var target = e.srcElement || e.target;
-        var maxLength = parseInt(target.attributes["maxlength"].value, 10);
-        var myLength = target.value.length;
-        if (myLength >= maxLength) {
+    var wordKey = ["result", "houses", "relief", "bitter"];
 
-            var next = target;
+    var tiles = {
+        "result": result,
+        "houses": houses,
+        "relief": relief,
+        "bitter": bitter
+    }
+    var bgColor = ["", "", ""]
 
-            while (next = next.nextElementSibling) {
-                if (next == null) {
+    var stage = 1; var maxWordsPerStage = 5; var wordsPerStage = 0; var currentDictionary = "";
+    var wordsCompleted = 0;
 
-                    break;
-                }
+    function determineStage() {
+        return stage;
+    }
 
-                if (next.tagName.toLowerCase() === "input") {
-                    next.focus();
-                    break;
-                }
-            }
+    // determineStage() 
+
+    function fillTiles() {
+        stage = determineStage();
+
+        var buttons = document.getElementsByClassName('letter');
+
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].innerText = wordKey[stage - 1][i].toUpperCase();
         }
-        // Move to previous field if empty (user pressed backspace)
-        else if (myLength === 0) {
-            var previous = target;
-            while (previous = previous.previousElementSibling) {
-                if (previous == null)
-                    break;
-                if (previous.tagName.toLowerCase() === "input") {
-                    previous.focus();
-                    break;
-                }
-            }
+
+
+    }
+
+    function clearAllFields() {
+        wordEntered = ""; keepAccount = [];
+        score = 0, highScore = 0, wordsCompleted = 0;
+        /*reset all input tags removing their disabled attribute so that the inputs are writable for
+        the next stage*/
+        for (var j = 0; j < globalKeeper.length; j++) {
+            globalKeeper[j].style.background = '#808080';
+            globalKeeper[j].value = "";
+            globalKeeper[j].disabled = false;
+
         }
     }
 
+    fillTiles();
+    var dictionary = getDictionary();
+
+
+    // var el = document.getElementById('getDiv');
+
+
+    // function pickRandomProp() {
+    //     var result,count=0;
+    //     for(var prop in dtiles)
+    //     if(Math.random() <1/++count) result = prop;
+    //     return result;
+    // }
+
+    function incrementStage() {
+        stage++;
+        return stage;
+    }
+
+    function callSetTimeout(inputField) {
+        setTimeout(function () {
+            answer.classList.remove('animated', 'fadeOut', 'wrong');
+            answer.innerText = "";
+            console.log(inputField)
+            inputField.parentElement.classList.remove('animated', 'wobble');
+        }, 1000)
+    }
+
+    function moveToNextStage(currentStage) {
+        // alert(currentStage)
+        if (currentStage == 3) {
+            alert("congrats you have passed the last stage");
+            return;
+        }
+        document.getElementById('main').style.background = '#295396';
+        clearAllFields();
+        var board = document.getElementsByClassName("letter");
+
+        for (var i = 0; i < wordKey[currentStage - 1].length; i++) {
+            board[i].innerText = wordKey[currentStage - 1][i].toUpperCase();
+        }
+        // document.getElementsByClassName("one")[0].parentElement.firstChild.focus();
+    }
+
+    function placeCursorInNextField(theElement) {
+        console.log(theElement.classList[0])
+        switch (theElement.classList[0]) {
+            case "one":
+                // console.log(document.getElementsByClassName("two")[0])
+                document.getElementsByClassName("two")[0].parentElement.firstChild.focus();
+                break;
+            case "two":
+                document.getElementsByClassName("three")[0].parentElement.firstChild.focus();
+                break;
+            case "three":
+                document.getElementsByClassName("four")[0].parentElement.firstChild.focus();
+                break;
+            case "four":
+                document.getElementsByClassName("five")[0].parentElement.firstChild.focus();
+                break;
+
+        }
+
+
+    }
+
+    function clearField() {
+        for (var k = 0; k < keepAccount.length; k++) {
+
+            keepAccount[k].value = "";
+        }
+    }
+
+
     /*define function checkword */
 
-    function checkWord(dWord) {
+    function getDictionary() {
+
+        currentDictionary = tiles[wordKey[stage - 1]];
+        return currentDictionary;
+    }
+
+    function checkWord(dWord, dictionary) {
+
         return dictionary.filter(function (value) {
             return dWord !== value.toUpperCase();
         })
     }
+
+    function checkIfFilled(inputTag) {
+
+
+        count = inputTag.parentElement.childElementCount;
+
+        for (var i = 0; i < count; i++) {
+            if ((inputTag.previousElementSibling.value == null) || (inputTag.previousElementSibling.value == "")) {
+                inputTag.previousElementSibling.focus();
+                return false;
+            }
+            if (inputTag.previousElementSibling.tagName != "input") {
+                break;
+            }
+            inputTag = inputTag.previousElementSibling;
+            console.log(inputTag.previousElementSibling)
+
+        }
+        return true;
+
+    }
     /* end defination*/
-
-
-
-
-
-
 
     /*focuse code*/
     var blurred, focused, wordEntered = ""; var keepAccount = [], globalKeeper = [];
     var score = 0, highScore = 0;
-    var test = document.getElementsByClassName('letter');
+    
 
 
     /* Reset Game */
@@ -80,17 +203,15 @@ function init() {
         showScore = document.getElementById('score');
         showScore.innerText = "Score";
 
-        for (var j = 0; j < globalKeeper.length; j++) {
-            globalKeeper[j].style.background = '#808080';
-            globalKeeper[j].value = "";
-            globalKeeper[j].disabled = false;
-
-        }
+        clearAllFields();
         init();
     }
-    /*End Reset Game */
+    startGame();
 
-    for (var i = 0; i < test.length; i++) {
+    /*End Reset Game */
+function startGame() {
+        var test = document.getElementsByClassName('letter');
+        for (var i = 0; i < test.length; i++) {
 
         test[i].addEventListener('click', function (e) {
 
@@ -104,33 +225,34 @@ function init() {
             }
 
             if (next.nextElementSibling == null) {
-                console.log(wordEntered);
-                var answer = document.getElementById('answer');
 
-                wordList = checkWord(wordEntered);
+                full = checkIfFilled(next);
+                if (!full) return;
+                var answer = document.getElementById('answer');
+                
+                wordList = checkWord(wordEntered, dictionary);
                 if (wordList.length == dictionary.length) {
+
                     next.parentElement.classList.add('animated', 'wobble');
                     answer.innerText = "Wrong!";
                     answer.classList.add('wrong');
 
+                    next.parentElement.firstChild.focus();
+
+
                     //setTimeout(function () {
-                        answer.classList.add('animated', 'fadeOut');
+                    answer.classList.add('animated', 'fadeOut');
                     //}, 100);
+                    console.log(next)
+                    callSetTimeout(next)
+                    clearField();
 
-                    setTimeout(function () {
-                        answer.classList.remove('animated', 'fadeOut', 'wrong');
-                        answer.innerText = "";
-                        next.parentElement.classList.remove('animated', 'wobble');
-                    }, 1000)
-
-                    for (var k = 0; k < keepAccount.length; k++) {
-
-                        keepAccount[k].value = "";
-                    }
 
                 }
                 else {
                     dictionary = wordList;
+                    wordsCompleted++;
+                    placeCursorInNextField(next)
                     answer.innerText = "Correct!";
                     answer.classList.add('right');
                     score += 5;
@@ -155,22 +277,22 @@ function init() {
                 }
                 wordEntered = "";
                 keepAccount = [];
-                return;
-            }
-            while (next = next.nextElementSibling) {
-                if (next == null) {
-                    // alert('here')
-                    // checkValue() 
-                    alert('null o');
+                if (wordsCompleted == maxWordsPerStage) {
+                    nextStage = incrementStage();
 
-                    break;
+                    moveToNextStage(nextStage);
+                    document.getElementsByClassName("one")[0].parentElement.firstChild.focus();
+                    return;
                 }
 
+            }
+            //this piece of code does the moving of cursor
+            while (next = next.nextElementSibling) {
+                if (next == null) {
+                    break;
+                }
                 if (next.tagName.toLowerCase() === "input") {
-                    // alert('het')
-                    // console.log(container);
-                    // console.log(container[0]);
-                    // if(next.attributes["name"].value = "last")
+
                     next.focus();
                     break;
                 }
@@ -179,7 +301,9 @@ function init() {
         })
 
     }
+}
 
+//the below code gives an eventListener for all inputs and gives us the input htat ha been blurred
     var els = document.querySelectorAll('input');
     Array.prototype.forEach.call(els, function (el) {
         el.addEventListener('blur', function () {
@@ -188,12 +312,12 @@ function init() {
             //   console.log(blurred.value);
             // blurred.value = "r"
         });
-        el.addEventListener('focus', function () {
-            focused = this;
-            var last = blurred;
-            console.log('focused', focused)
-            setTimeout(function () { console.log('previous: ' + (last ? last.name : 'none')) }, 0);
-        });
+        // el.addEventListener('focus', function () {
+        //     focused = this;
+        //     var last = blurred;
+        //     //console.log('focused', focused)
+        //     //setTimeout(function () { console.log('previous: ' + (last ? last.name : 'none')) }, 0);
+        // });
     });
 
 
