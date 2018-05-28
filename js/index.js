@@ -4,51 +4,52 @@ window.onload = init;
 
 function init() {
 
-    var result,houses,relief,bitter,wordKey,tiles,bgColor,stage,maxWordsPerStage,wordsPerStage;
-    var currentDictionary,wordsCompleted,blurred,focused,wordEntered,keepAccount;
-    var globalKeeper,score,highScore;
-initState();
-    
+    var result, houses, relief, bitter, wordKey, tiles, bgColor, stage, maxWordsPerStage, wordsPerStage;
+    var wordsCompleted, blurred, focused, wordEntered, keepAccount, dictionary;
+    var globalKeeper, score, highScore, stage = 1;
+    initState();
+
 
     function initState() {
-result = [
-        "lusts", "luter", 'trues', "rusts", "sluse",
-        "suers", "rests", "sluts", "slues", "lures",
-        "sures", "truss", "trues", "tress", "users",
-        "rusts", "tules", "rules", "slurs", "ruses",
-        "lutes", "set", "rule", "lut", "luts"
-    ];
-houses = [
-        "hose", "shoe", "shoes", "sou", "she", "house"
-    ]
+        result = [
+            "lusts", "luter", 'trues', "rusts", "sluse",
+            "suers", "rests", "sluts", "slues", "lures",
+            "sures", "truss", "trues", "tress", "users",
+            "rusts", "tules", "rules", "slurs", "ruses",
+            "lutes", "set", "rule", "lut", "luts"
+        ];
+        houses = [
+            "hose", "shoe", "shoes", "sou", "she", "house"
+        ]
 
-    relief = [
-        "feel", "lie", "file", "ref", "reef", "free", "flee",
-        "flier", "relie"
-    ]
+        relief = [
+            "feel", "lie", "file", "ref", "reef", "free", "flee",
+            "flier", "relie"
+        ]
 
 
-    // var tiles = [
-    //     "result","change","houses","savers","insect","spaces","relief","belief"
-    // ]
-    bitter = [
-        "bit", "bite", "rite", "rib", "rit", "tier", "bet"
-    ]
+        // var tiles = [
+        //     "result","change","houses","savers","insect","spaces","relief","belief"
+        // ]
+        bitter = [
+            "bit", "bite", "rite", "rib", "rit", "tier", "bet"
+        ]
 
-    wordKey = ["result", "houses", "relief", "bitter"];
+        wordKey = ["result", "houses", "relief", "bitter"];
 
-    tiles = {
-        "result": result,
-        "houses": houses,
-        "relief": relief,
-        "bitter": bitter
-    }
-    bgColor = ["", "", ""]
+        tiles = {
+            "result": result,
+            "houses": houses,
+            "relief": relief,
+            "bitter": bitter
+        }
+        // bgColor = ["", "", ""]
 
-    stage = 1; maxWordsPerStage = 5;wordsPerStage = 0; currentDictionary = "";
-    wordsCompleted = 0;
-  wordEntered = ""; keepAccount = [], globalKeeper = [];
-    score = 0, highScore = 0;
+        maxWordsPerStage = 5; wordsPerStage = 0;
+        wordsCompleted = 0;
+        wordEntered = ""; keepAccount = [], globalKeeper = [];
+        score = 0, highScore = 0;
+        console.log("dictionary",dictionary)
     }
 
     function determineStage() {
@@ -59,6 +60,7 @@ houses = [
 
     function fillTiles() {
         stage = determineStage();
+        if(stage == 3) stage = 1; //resetting stage back to one;
 
         var buttons = document.getElementsByClassName('letter');
 
@@ -75,15 +77,11 @@ houses = [
         /*reset all input tags removing their disabled attribute so that the inputs are writable for
         the next stage*/
         for (var j = 0; j < globalKeeper.length; j++) {
-            globalKeeper[j].style.background = '#808080';
             globalKeeper[j].value = "";
             globalKeeper[j].disabled = false;
 
         }
     }
-
-    fillTiles();
-    var dictionary = getDictionary();
 
 
     // var el = document.getElementById('getDiv');
@@ -110,24 +108,46 @@ houses = [
         }, 1000)
     }
 
+    function incrementLevel(level) {
+        var theLevel = document.getElementById('level');
+        theLevel.innerText = "Level " + level;
+    }
+
+    function resetLevel() {
+        var theLevel = document.getElementById('level');
+        theLevel.innerText = "Level 1";
+    }
+
     function moveToNextStage(currentStage) {
-        // alert(currentStage)
         if (currentStage == 3) {
             alert("congrats you have passed the last stage");
             return;
         }
-        document.getElementById('main').style.background = '#295396';
-        clearAllFields();
+        clearAllFields();//clear all input fields
+        incrementLevel(currentStage)//increment stage
         var board = document.getElementsByClassName("letter");
 
         for (var i = 0; i < wordKey[currentStage - 1].length; i++) {
             board[i].innerText = wordKey[currentStage - 1][i].toUpperCase();
+            board[i].classList.add('animated', 'flip')
         }
+
+
+
+        dictionary = getDictionary();
+
+        setTimeout(function () {
+            for (var i = 0; i < wordKey[currentStage - 1].length; i++) {
+                board[i].innerText = wordKey[currentStage - 1][i].toUpperCase();
+                board[i].classList.remove('animated', 'flip')
+
+            }
+        }, 1000)
         // document.getElementsByClassName("one")[0].parentElement.firstChild.focus();
     }
 
     function placeCursorInNextField(theElement) {
-        console.log(theElement.classList[0])
+        // console.log(theElement.classList[0])
         switch (theElement.classList[0]) {
             case "one":
                 // console.log(document.getElementsByClassName("two")[0])
@@ -195,20 +215,24 @@ houses = [
     /* end defination*/
 
     /*focuse code*/
-
+    function resetScore() {
+        showScore = document.getElementById('score');
+        showScore.innerText = "Score: 0";
+    }
 
 
 
     /* Reset Game */
     function resetGame() {
-        showScore = document.getElementById('score');
-        showScore.innerText = "Score";
         clearAllFields();
         initState();
+        resetScore()
+        resetLevel();
+        fillTiles();
         document.getElementsByClassName('one')[0].parentElement.firstChild.focus();
 
     }
-    function modifyScore() {
+    function incrementScore() {
         score += 5;
         highScore += 5;
         showScore = document.getElementById('score');
@@ -227,14 +251,14 @@ houses = [
                 answer.classList.remove('animated', 'fadeOut', 'right');
                 answer.innerText = "";
             }, 1000);
-            modifyScore();
+            incrementScore();
             //change the color of the input items to green, to indicate a correct field
             for (var k = 0; k < keepAccount.length; k++) {
-                keepAccount[k].style.background = "#4caf50";
+                // keepAccount[k].style.background = "#4caf50";
                 // keepAccount[k].classList.add('good');
                 keepAccount[k].disabled = true;
             }
- }
+        }
         else {
             next.parentElement.classList.add('animated', 'wobble');
             answer.innerText = "Wrong!";
@@ -254,10 +278,17 @@ houses = [
             return true;
         }
     }
+
+    fillTiles();
+    dictionary = getDictionary();
+
+
     startGame();
 
     /*End Reset Game */
     function startGame() {
+        // var name = prompt("please enter your name","Guest user");
+        // document.getElementById('welcome').innerText = "Welcome "+name;
         var test = document.getElementsByClassName('letter');
         for (var i = 0; i < test.length; i++) {
 
@@ -273,7 +304,7 @@ houses = [
                 }
 
                 if (next.nextElementSibling == null) {
-
+                    console.log(dictionary)
                     full = checkIfFilled(next);
                     if (!full) return;
                     var answer = document.getElementById('answer');

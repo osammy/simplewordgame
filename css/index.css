@@ -1,6 +1,9 @@
 *{
     box-sizing: border-box;
 }
+body{
+    color:black
+}
 
 #main {
     width:70%;
@@ -9,7 +12,7 @@
     border: 1px solid black;
     /*background: red;*/
     position:relative;
-    color:white;
+    color:black;
       /*background-image:
     linear-gradient(
       brown, #f06d06
@@ -32,7 +35,6 @@
 #inner-top-left {
    
     justify-content: space-around;
-    /*border:1px solid white;    */
     width:90%;
     margin:10px;
     height:90%;
@@ -45,7 +47,7 @@
 .row {
     display: flex;
     flex-wrap: nowrap;
-   
+   color:black;
     align-items: center;
         justify-content: space-around;
     height: 50px;
@@ -61,6 +63,8 @@
     margin:5px;
 }
 .row span input {
+       color: #333;
+text-shadow: 0px 1px 0px rgba(255,255,255,.5); 
     background: transparent;
     text-align: center;
     flex-direction: row;
@@ -70,7 +74,7 @@
     height:30px;
     height: 35px;
     padding-right:20px;
-    color:white;
+    /*color:white;*/
     /*background: grey;*/
     margin: 5px;
     /*color:white;*/
@@ -98,9 +102,10 @@
 #top-right-container {
     width: 80%;
     position: absolute;
-    height: 90%;
-    margin:3%;
-    border: 1px solid white;
+    top:12%;
+    height: 80%;
+    margin:1%;
+    /*border: 1px solid white;*/
     border-top-right-radius: 5px;
       border-top-left-radius: 5px;
       border-bottom-right-radius: 5px;
@@ -138,7 +143,7 @@
     flex-direction: row;
     height: 50px;
     text-align: center;
-    color:white;
+    /*color:white;*/
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     border-top-left-radius: 5px;
@@ -170,22 +175,23 @@
 
 #restart-game {
     position:absolute;
-    width:90%;
-    height:50px;
-    margin: 0 auto;
+    width:100px;
+    height:30px;
     background: #ff2525;
     border-bottom:3px solid #a00001;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    bottom:10px;
-    left:10px;
     text-align:center;
     color:white;
-    padding-top:10px;
-    font-family:'serif';
+    font-size: small;
+    /*padding-top:10px;*/
 }
+
+/*#restart-game:hover {
+    background: #ff5500;
+}*/
 
 #top-right-content {
     position: absolute;
@@ -199,9 +205,29 @@
     border-bottom-right-radius: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    color:white;
-    font-size: 1.2em;
+    /*color:white;*/
+}
+
+#top-right-content div:first-child {
+        font-size: 1.2em;
     font-weight: bold;
+
+}
+
+.engraveText {
+    color: #333;
+text-shadow: 0px 1px 0px rgba(255,255,255,.5); 
+}
+
+#instructions {
+text-align:center;
+line-height:2em;
+
+padding-left:0px;
+font-size: small;
+/*color: black;
+text-shadow: 0px 1px 0px rgba(255,255,255,.5); */
+color:white;
 }
 
 .report {

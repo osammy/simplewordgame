@@ -8,13 +8,20 @@
 
 </head>
 
-<body >
+<body>
     <div id="main">
-  
+
         <div id="top-left">
             <div id="inner-top-left">
-                <div style="text-align:center;color:white;font-size:1.5em" >Level 1</div><br />
-                <div id="first" class="row">3
+                <span id="welcome" class="engraveText" style="font-size:1.2em;padding-right:10%;font-weight:bold">Welcome Guest!</span>
+                <span id="level" class="engraveText" style="font-size:1.2em;padding-right:10%">Level 1</span>
+                <span class="engraveText" id="score" class="report" style="font-size:1.2em;padding-right:10%">Score: 0</span>
+                                <span id="restart-game">
+                    RESTART
+                </span>
+
+                <br /><br />
+                <div id="first" class="row">Three Words
                     <span><input class="one"  id="check" autofocus class="do" maxlength="1"  type="text"  />
                         <input class="one"  id="two" class="do" maxlength="1"  type="text"  />
                         <input class="one"  name="last" id="three" class="do" maxlength="1"  type="text"  />
@@ -22,7 +29,7 @@
 
                 </div><br/>
                 <!--next row-->
-                <div id="second" class="row">3
+                <div id="second" class="row">Three Words
                     <span><input class="two" maxlength="1"  type="text"  />
 <input class="two" maxlength="1"  type="text"  />
 <input class="two" maxlength="1"  type="text"  />
@@ -32,7 +39,7 @@
 
                 </div><br />
                 <!--next row -->
-                <div id="third" class="row">4
+                <div id="third" class="row">Four Words
                     <span><input class="three" maxlength="1"  type="text"  />
 <input class="three" maxlength="1"  type="text"  />
 <input class="three" maxlength="1"  type="text"  />
@@ -43,7 +50,7 @@
 
                 </div><br/>
                 <!--fourth row-->
-                <div id="fourth" class="row">5
+                <div id="fourth" class="row">Five Words
                     <span><input class="do" maxlength="1"  type="text"  />
 <input class="four" maxlength="1"  type="text"  />
 <input class="four" maxlength="1"  type="text"  />
@@ -54,7 +61,7 @@
 
                 </div>
                 <!--fifth row-->
-                <div id="fifth" class="row">5
+                <div id="fifth" class="row">Five Words
                     <span><input class="do" maxlength="1"  type="text"  />
 <input class="five" maxlength="1"  type="text"  />
 <input class="five" maxlength="1"  type="text"  />
@@ -70,25 +77,27 @@
             </div>
         </div>
         <div id="top-right">
-            <div id="top-right-container">
-                
-                <div id="top-right-content">
-                    <div>GUESS THE WORD GAME</div>
+            <div style="background:black;color:white;" id="top-right-container"><br/>
+
+                <div class="engraveText" id="top-right-content">
+                    <div style="color:white;padding:10px;" class="">RULES ON HOW TO PLAY THE GAME</div><hr />
+                    <div id="instructions">This is a simple word game.
+                        You are to form words from the words on the 
+                        tiles, the number of words contained in each field is stated to the right side of the board. Each completed word attracts 5 points after all words are completed from stage 1 you are automatically moved to stage 2.
+                        Words are filled from top to bottom. Enjoy!
+                        
+                        </div><br />
+                    
                     <div id="answer"></div>
-                    <div>
-                        <!--<img src="./img/tile_small.png" />-->
-                    </div>
-                    <hr /><br />
-                    <div id="score"  class="report">Score:0</div><br />
-                    <div id="" class="report">HighestScore:0</div>
+
                 </div>
-                <div id="restart-game">
+                <!--<div id="restart-game">
                     RESTART
-                </div>
+                </div>-->
             </div>
         </div>
         <div id="bottom">
-            <div  id="bottom-container">
+            <div id="bottom-container">
                 <div id="test" class="letter"></div>
                 <div class="letter"></div>
                 <div class="letter"></div>
@@ -101,10 +110,11 @@
     </div>
 
 
+            
 
-<div id="getDiv">
+    <div id="getDiv">
 
-</div>
+    </div>
 
     <script type="text/javascript" src="./js/index.js"></script>
 
